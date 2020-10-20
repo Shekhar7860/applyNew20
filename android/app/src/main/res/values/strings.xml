@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Apply MBBS in Bangladesh</string>
+    <string name="fb_app_id">2075621416023510</string>
+    <string name="fb_app_secret">470eda81e44063d6ee4825524459e4d0</string>
+    <string name="fb_login_protocol_scheme">fb2075621416023510</string>
+</resources>

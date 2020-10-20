@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "39539890358",
+    "firebase_url": "https://modicarehelp-24ab2.firebaseio.com",
+    "project_id": "modicarehelp-24ab2",
+    "storage_bucket": "modicarehelp-24ab2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:39539890358:android:eed3e22e3b948f5d76ee17",
+        "android_client_info": {
+          "package_name": "com.modicarehelp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "39539890358-49plk7g60ksrqbiis1fhgtun5addpm51.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKrF39d5B8oSNgtp0vrxtHObZ3qmJwfkU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "39539890358-49plk7g60ksrqbiis1fhgtun5addpm51.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
