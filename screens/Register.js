@@ -67,66 +67,61 @@ export default class Register extends Component {
   };
 
   submit = () => {
+    var regexp = /^\S*$/;
+    var pat = /^[a-z]+$/;
+
     if (this.state.name && this.state.email && this.state.mobile) {
-      if (!service.validateEmail(this.state.email)) {
-        Alert.alert('Invalid Email Address');
+      if (
+        regexp.test(this.state.name) == true &&
+        pat.test(this.state.name) == true
+      ) {
+        if (
+          !service.validateEmail(this.state.email) &&
+          pat.test(this.state.email) == false
+        ) {
+          Alert.alert('Invalid Email Address');
+        } else {
+          this.setState({visible: true});
+          var data = {
+            name: this.state.name,
+            mobile_no: this.state.mobile,
+            username: this.state.name,
+            email: this.state.email,
+            first_name: this.state.firstName,
+            last_name: this.state.lastName,
+            password: this.state.password,
+            roles: 'author',
+          };
+          service
+            .register(
+              this.state.name,
+              this.state.email,
+              this.state.firstName,
+              this.state.lastName,
+              this.state.password,
+              this.state.mobile,
+            )
+            .then(res => {
+              console.group('user ress is ', res);
+              service.saveUserData('tokenData', res);
+              this.setState({visible: false});
+              fetch('https://www.mbbsbangladesh.com/wp-json/wp/v2/users', {
+                method: 'POST',
+                headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json',
+                  authorization: 'Bearer ' + res.token,
+                },
+                body: JSON.stringify(data),
+              })
+                .then(response => console.group('my resss is', response))
+                .catch(error => {
+                  console.group('error', error);
+                });
+            });
+        }
       } else {
-        this.setState({visible: true});
-        var data = {
-          name: this.state.name,
-          mobile_no: this.state.mobile,
-          username: this.state.name,
-          email: this.state.email,
-          first_name: this.state.firstName,
-          last_name: this.state.lastName,
-          password: this.state.password,
-          roles: 'author',
-        };
-        service
-          .register(
-            this.state.name,
-            this.state.email,
-            this.state.firstName,
-            this.state.lastName,
-            this.state.password,
-            this.state.mobile,
-          )
-          .then(res => {
-            //alert(this.state.mobile)
-            service.saveUserData('tokenData', res);
-            this.setState({visible: false});
-            fetch('https://www.mbbsbangladesh.com/wp-json/wp/v2/users', {
-              method: 'POST',
-              headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                authorization: 'Bearer ' + res.token,
-              },
-              body: JSON.stringify(data),
-            })
-              .then(response =>
-                response.json().then(res => {
-                  console.log('resssss', res);
-                  if (
-                    res.code !== 'existing_user_login' &&
-                    res.code !== 'existing_user_email'
-                  ) {
-                    // console.log(res, 'resss')
-                    // Alert.alert('User Created SuccessFully')
-                    service.saveUserData('userData', res);
-                    this.setState({visible: false});
-                    this.props.navigation.navigate('Otp', {
-                      number: this.state.mobile,
-                    });
-                  } else {
-                    Alert.alert(res.message);
-                  }
-                }),
-              )
-              .catch(error => {
-                console.log('error', error);
-              });
-          });
+        Alert.alert('No White Space and Upper case character allowed');
       }
     } else {
       Alert.alert('Please enter all details');

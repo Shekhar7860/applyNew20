@@ -115,7 +115,7 @@ export default class Service extends Component {
   };
 
   login = (username, password) => {
-    console.log('username', username, 'password', password);
+    // console.log('username', username, 'password', password);
     let formdata = new FormData();
     //formdata.append("name", 'test')
     formdata.append('username', username);

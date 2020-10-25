@@ -110,114 +110,109 @@ export default class Login extends Component {
     this.props.navigation.navigate('Register');
   };
   submit = () => {
-    console.log(
-      'username',
-      this.state.username,
-      'password',
-      this.state.password,
-    );
+    var regexp = /^\S*$/;
+    var pat = /^[a-z]+$/;
+
     if (this.state.username && this.state.password) {
-      this.setState({visible: true});
-      service.login(this.state.username, this.state.password).then(res => {
-        //  console.group('resss1', res);
-        //  this.setState({username :"", password :""})
-        if (res.data !== undefined) {
-          if (
-            res.message !==
-              'Unknown username. Check again or try your email address.' &&
-            res.data.status !== 403
-          ) {
-            // service.saveUserData('tokenData', res)
-            var data = {
-              username: this.state.username,
-              password: this.state.password,
-            };
-            fetch('https://www.mbbsbangladesh.com/wp-json/wp/v2/users/me', {
-              method: 'POST',
-              headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                authorization: 'Bearer ' + res.token,
-              },
-              body: JSON.stringify(data),
-            })
-              .then(response =>
-                response.json().then(userRes => {
-                  console.group('resssss2', userRes);
-                  if (
-                    res.message !== 'Invalid parameter(s): username, password'
-                  ) {
-                    service.saveUserData('tokenData', res);
-                    service.saveUserData('userData', userRes);
-
-                    // console.log(res, 'resss')
-                    // Alert.alert('Login SuccessFully')
-                    this.setState({visible: false});
-                    this.props.navigation.navigate('Profile');
-                  } else {
-                    this.setState({username: '', password: ''});
-                    Alert.alert('Wrong Username or Password');
-                  }
-                }),
-              )
-              .catch(error => {
-                this.setState({username: '', password: ''});
-                this.setState({visible: false});
-                Alert.alert('NetWork Error');
-              });
+      if (
+        regexp.test(this.state.username) == true &&
+        pat.test(this.state.username) == true
+      ) {
+        this.setState({visible: true});
+        service.login(this.state.username, this.state.password).then(res => {
+          if (res.data !== undefined) {
+            if (
+              res.message !==
+                'Unknown username. Check again or try your email address.' &&
+              res.data.status !== 403
+            ) {
+              var data = {
+                username: this.state.username,
+                password: this.state.password,
+              };
+              fetch('https://www.mbbsbangladesh.com/wp-json/wp/v2/users/me', {
+                method: 'POST',
+                headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json',
+                  authorization: 'Bearer ' + res.token,
+                },
+                body: JSON.stringify(data),
+              })
+                .then(response =>
+                  response.json().then(userRes => {
+                    console.group('resssss2', userRes);
+                    if (
+                      res.message !== 'Invalid parameter(s): username, password'
+                    ) {
+                      service.saveUserData('tokenData', res);
+                      service.saveUserData('userData', userRes);
+                      this.setState({visible: false});
+                      this.props.navigation.navigate('Profile');
+                    } else {
+                      this.setState({username: '', password: ''});
+                      Alert.alert('Wrong Username or Password');
+                    }
+                  }),
+                )
+                .catch(error => {
+                  this.setState({username: '', password: ''});
+                  this.setState({visible: false});
+                  Alert.alert('NetWork Error');
+                });
+            } else {
+              this.setState({visible: false});
+              Alert.alert('Wrong Userame or Password');
+            }
           } else {
-            this.setState({visible: false});
-            Alert.alert('Wrong Userame or Password');
+            if (
+              res.message !==
+              'Unknown username. Check again or try your email address.'
+            ) {
+              service.saveUserData('tokenData', res);
+              var data = {
+                username: this.state.username,
+                password: this.state.password,
+              };
+              fetch('https://www.mbbsbangladesh.com/wp-json/wp/v2/users/me', {
+                method: 'POST',
+                headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json',
+                  authorization: 'Bearer ' + res.token,
+                },
+                body: JSON.stringify(data),
+              })
+                .then(response =>
+                  response.json().then(userRes => {
+                    console.group('resssss', userRes, res);
+                    if (
+                      res.message !== 'Invalid parameter(s): username, password'
+                    ) {
+                      service.saveUserData('tokenData', res);
+                      service.saveUserData('userData', userRes);
+                      this.setState({visible: false});
+                      this.props.navigation.navigate('Profile');
+                    } else {
+                      this.setState({username: '', password: ''});
+                      Alert.alert('Wrong Username or Password');
+                    }
+                  }),
+                )
+                .catch(error => {
+                  this.setState({username: '', password: ''});
+                  this.setState({visible: false});
+                  Alert.alert('NetWork Error');
+                });
+            } else {
+              this.setState({visible: false});
+              Alert.alert('Wrong Userame or Password');
+            }
           }
-        } else {
-          if (
-            res.message !==
-            'Unknown username. Check again or try your email address.'
-          ) {
-            service.saveUserData('tokenData', res);
-            var data = {
-              username: this.state.username,
-              password: this.state.password,
-            };
-            fetch('https://www.mbbsbangladesh.com/wp-json/wp/v2/users/me', {
-              method: 'POST',
-              headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                authorization: 'Bearer ' + res.token,
-              },
-              body: JSON.stringify(data),
-            })
-              .then(response =>
-                response.json().then(userRes => {
-                  console.group('resssss', userRes, res);
-                  if (
-                    res.message !== 'Invalid parameter(s): username, password'
-                  ) {
-                    service.saveUserData('tokenData', res);
-                    service.saveUserData('userData', userRes);
-
-                    // console.log(res, 'resss')
-                    // Alert.alert('Login SuccessFully')
-                    this.setState({visible: false});
-                    this.props.navigation.navigate('Profile');
-                  } else {
-                    this.setState({username: '', password: ''});
-                    Alert.alert('Wrong Username or Password');
-                  }
-                }),
-              )
-              .catch(error => {
-                this.setState({username: '', password: ''});
-                this.setState({visible: false});
-                Alert.alert('NetWork Error');
-              });
-          } else {
-            this.setState({visible: false});
-            Alert.alert('Wrong Userame or Password');
-          }
-        }
-      });
+        });
+      } else {
+        Alert.alert('No White Space and Upper case character allowed');
+      }
     } else {
       Alert.alert('please enter username and password both');
     }
