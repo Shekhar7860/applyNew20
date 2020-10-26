@@ -38,11 +38,8 @@ export default class Register extends Component {
     service = new Service();
   }
 
-  componentDidMount = () => {
-    LoginManager.logOut();
-  };
   fbSignIn = () => {
-    LoginManager.logInWithPermissions(['public_profile', 'email']).then(
+    LoginManager.logInWithReadPermissions(['public_profile', 'email']).then(
       result => {
         console.log(result, 'rest');
         this.props.navigation.navigate('Profile');
@@ -67,61 +64,61 @@ export default class Register extends Component {
   };
 
   submit = () => {
-    var regexp = /^\S*$/;
-    var pat = /^[a-z]+$/;
-
     if (this.state.name && this.state.email && this.state.mobile) {
-      if (
-        regexp.test(this.state.name) == true &&
-        pat.test(this.state.name) == true
-      ) {
-        if (
-          !service.validateEmail(this.state.email) &&
-          pat.test(this.state.email) == false
-        ) {
-          Alert.alert('Invalid Email Address');
-        } else {
-          this.setState({visible: true});
-          var data = {
-            name: this.state.name,
-            mobile_no: this.state.mobile,
-            username: this.state.name,
-            email: this.state.email,
-            first_name: this.state.firstName,
-            last_name: this.state.lastName,
-            password: this.state.password,
-            roles: 'author',
-          };
-          service
-            .register(
-              this.state.name,
-              this.state.email,
-              this.state.firstName,
-              this.state.lastName,
-              this.state.password,
-              this.state.mobile,
-            )
-            .then(res => {
-              console.group('user ress is ', res);
-              service.saveUserData('tokenData', res);
-              this.setState({visible: false});
-              fetch('https://www.mbbsbangladesh.com/wp-json/wp/v2/users', {
-                method: 'POST',
-                headers: {
-                  Accept: 'application/json',
-                  'Content-Type': 'application/json',
-                  authorization: 'Bearer ' + res.token,
-                },
-                body: JSON.stringify(data),
-              })
-                .then(response => console.group('my resss is', response))
-                .catch(error => {
-                  console.group('error', error);
-                });
-            });
-        }
+      if (!service.validateEmail(this.state.email)) {
+        Alert.alert('Invalid Email Address');
       } else {
-        Alert.alert('No White Space and Upper case character allowed');
+        this.setState({visible: true});
+        var data = {
+          name: this.state.name,
+          username: this.state.name,
+          email: this.state.email,
+          first_name: this.state.firstName,
+          last_name: this.state.lastName,
+          password: this.state.password,
+          roles: 'author',
+        };
+        service
+          .register(
+            this.state.name,
+            this.state.email,
+            this.state.firstName,
+            this.state.lastName,
+            this.state.password,
+            this.state.mobile,
+          )
+          .then(res => {
+            console.log('resss0', res);
+            this.setState({visible: false});
+
+            fetch('https://www.mbbsbangladesh.com/wp-json/wp/v2/users', {
+              method: 'POST',
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                authorization: 'Bearer ' + res.token,
+              },
+              body: JSON.stringify(data),
+            })
+              .then(response =>
+                response.json().then(res => {
+                  console.group('resssss', res);
+                  if (res.code !== 'existing_user_login') {
+                    // console.log(res, 'resss')
+                    // Alert.alert('User Created SuccessFully');
+                    this.setState({visible: false});
+                    this.props.navigation.navigate('Otp', {
+                      number: this.state.mobile,
+                    });
+                  } else {
+                    Alert.alert(res.message);
+                  }
+                }),
+              )
+              .catch(error => {
+                console.log('error', error);
+              });
+          });
       }
     } else {
       Alert.alert('Please enter all details');
@@ -242,16 +239,12 @@ export default class Register extends Component {
               />
               <TextInput
                 style={styles.inputBox}
-                autoFocus={true}
                 onChangeText={name => this.setState({name})}
                 underlineColorAndroid="rgba(0,0,0,0)"
-                placeholder="User Name"
+                placeholder="Name"
                 placeholderTextColor="#95A5A6"
-                keyboardType="default"
-                autoCapitalize="none"
-                onSubmitEditing={() => {
-                  this.secondTextInput.focus();
-                }}
+                selectionColor="#fff"
+                keyboardType="email-address"
               />
             </View>
 
@@ -270,18 +263,12 @@ export default class Register extends Component {
               />
               <TextInput
                 style={styles.inputBox}
-                ref={input => {
-                  this.secondTextInput = input;
-                }}
                 onChangeText={email => this.setState({email})}
                 underlineColorAndroid="rgba(0,0,0,0)"
                 placeholder="Email Address"
-                onSubmitEditing={() => {
-                  this.threeTextInput.focus();
-                }}
                 placeholderTextColor="#95A5A6"
-                keyboardType="default"
-                autoCapitalize="none"
+                selectionColor="#fff"
+                keyboardType="email-address"
               />
             </View>
 
@@ -301,16 +288,11 @@ export default class Register extends Component {
               <TextInput
                 style={styles.inputBox}
                 onChangeText={mobile => this.setState({mobile})}
-                ref={input => {
-                  this.threeTextInput = input;
-                }}
                 underlineColorAndroid="rgba(0,0,0,0)"
                 placeholder="Phone Number"
                 maxLength={10}
                 placeholderTextColor="#95A5A6"
-                onSubmitEditing={() => {
-                  this.fourthTextInput.focus();
-                }}
+                selectionColor="#fff"
                 keyboardType="number-pad"
               />
             </View>
@@ -329,16 +311,11 @@ export default class Register extends Component {
               />
               <TextInput
                 style={styles.inputBox}
-                ref={input => {
-                  this.fourthTextInput = input;
-                }}
                 onChangeText={firstName => this.setState({firstName})}
                 underlineColorAndroid="rgba(0,0,0,0)"
                 placeholder="First Name"
                 placeholderTextColor="#95A5A6"
-                onSubmitEditing={() => {
-                  this.fifthTextInput.focus();
-                }}
+                selectionColor="#fff"
                 keyboardType="default"
               />
             </View>
@@ -359,15 +336,10 @@ export default class Register extends Component {
               <TextInput
                 style={styles.inputBox}
                 onChangeText={lastName => this.setState({lastName})}
-                ref={input => {
-                  this.fifthTextInput = input;
-                }}
                 underlineColorAndroid="rgba(0,0,0,0)"
                 placeholder="Last Name"
-                onSubmitEditing={() => {
-                  this.sixthTextInput.focus();
-                }}
                 placeholderTextColor="#95A5A6"
+                selectionColor="#fff"
                 keyboardType="default"
               />
             </View>
@@ -388,13 +360,10 @@ export default class Register extends Component {
                 style={styles.inputBox}
                 onChangeText={password => this.setState({password})}
                 underlineColorAndroid="rgba(0,0,0,0)"
-                ref={input => {
-                  this.sixthTextInput = input;
-                }}
                 placeholder="Password"
                 placeholderTextColor="#95A5A6"
+                selectionColor="#fff"
                 keyboardType="default"
-                autoCapitalize="none"
                 secureTextEntry={true}
               />
             </View>
@@ -402,6 +371,15 @@ export default class Register extends Component {
             <TouchableOpacity style={styles.button}>
               <Text style={styles.buttonText} onPress={() => this.submit()}>
                 Submit
+              </Text>
+            </TouchableOpacity>
+            <Text style={{marginTop: 10, alignSelf: 'center', fontSize: 20}}>
+              {' '}
+              OR{' '}
+            </Text>
+            <TouchableOpacity style={styles.button}>
+              <Text style={styles.buttonText} onPress={() => this.fbSignIn()}>
+                Login With FaceBook
               </Text>
             </TouchableOpacity>
           </View>
