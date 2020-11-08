@@ -64,61 +64,94 @@ export default class Register extends Component {
   };
 
   submit = () => {
+    var regexp = /^\S*$/;
+    var pat = /^[a-z0-9]+$/;
     if (this.state.name && this.state.email && this.state.mobile) {
-      if (!service.validateEmail(this.state.email)) {
-        Alert.alert('Invalid Email Address');
-      } else {
-        this.setState({visible: true});
-        var data = {
-          name: this.state.name,
-          username: this.state.name,
-          email: this.state.email,
-          first_name: this.state.firstName,
-          last_name: this.state.lastName,
-          password: this.state.password,
-          roles: 'author',
-        };
-        service
-          .register(
-            this.state.name,
-            this.state.email,
-            this.state.firstName,
-            this.state.lastName,
-            this.state.password,
-            this.state.mobile,
-          )
-          .then(res => {
-            console.log('resss0', res);
-            this.setState({visible: false});
+      if (
+        regexp.test(this.state.name) == true &&
+        pat.test(this.state.name) == true
+      ) {
+        if (
+          !service.validateEmail(this.state.email) &&
+          regexp.test(this.state.email) == true &&
+          pat.test(this.state.email) == true
+        ) {
+          Alert.alert('Invalid Email Address');
+        } else {
+          this.setState({visible: true});
+          var data = {
+            name: this.state.name,
+            username: this.state.name,
+            email: this.state.email,
+            first_name: this.state.firstName,
+            last_name: this.state.lastName,
+            password: this.state.password,
+            roles: 'author',
+            mobile_no: this.state.mobile,
+          };
+          service
+            .register(
+              this.state.name,
+              this.state.email,
+              this.state.firstName,
+              this.state.lastName,
+              this.state.password,
+              this.state.mobile,
+            )
+            .then(res => {
+              // alert(this.state.mobile);
+              console.log('resss0', res);
+              this.setState({visible: false});
 
-            fetch('https://www.mbbsbangladesh.com/wp-json/wp/v2/users', {
-              method: 'POST',
-              headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                authorization: 'Bearer ' + res.token,
-              },
-              body: JSON.stringify(data),
-            })
-              .then(response =>
-                response.json().then(res => {
-                  console.group('resssss', res);
-                  if (res.code !== 'existing_user_login') {
-                    // console.log(res, 'resss')
-                    // Alert.alert('User Created SuccessFully');
-                    this.setState({visible: false});
-                    this.props.navigation.navigate('Otp', {
-                      number: this.state.mobile,
-                    });
-                  } else {
-                    Alert.alert(res.message);
-                  }
-                }),
-              )
-              .catch(error => {
-                console.log('error', error);
-              });
-          });
+              fetch('https://www.mbbsbangladesh.com/wp-json/wp/v2/users', {
+                method: 'POST',
+                headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json',
+                  authorization: 'Bearer ' + res.token,
+                },
+                body: JSON.stringify(data),
+              })
+                .then(response =>
+                  response.json().then(res => {
+                    console.group('resssss', res);
+                    if (
+                      res.code !== 'existing_user_login' &&
+                      res.code !== 'existing_user_email'
+                    ) {
+                      service.saveUserData('userData', res);
+                      // console.log(res, 'resss')
+                      // Alert.alert('User Created SuccessFully');
+                      this.setState({visible: false});
+                      this.props.navigation.navigate('Otp', {
+                        number: this.state.mobile,
+                      });
+                    } else {
+                      Alert.alert(res.message);
+                      this.setState({
+                        mobile: '',
+                        email: '',
+                        firstName: '',
+                        lastName: '',
+                        userName: '',
+                      });
+                    }
+                  }),
+                )
+                .catch(error => {
+                  this.setState({
+                    mobile: '',
+                    email: '',
+                    firstName: '',
+                    lastName: '',
+                    userName: '',
+                  });
+                  console.log('error', error);
+                });
+            });
+        }
+      } else {
+        Alert.alert('No White Space and Upper case character allowed');
       }
     } else {
       Alert.alert('Please enter all details');
@@ -371,15 +404,6 @@ export default class Register extends Component {
             <TouchableOpacity style={styles.button}>
               <Text style={styles.buttonText} onPress={() => this.submit()}>
                 Submit
-              </Text>
-            </TouchableOpacity>
-            <Text style={{marginTop: 10, alignSelf: 'center', fontSize: 20}}>
-              {' '}
-              OR{' '}
-            </Text>
-            <TouchableOpacity style={styles.button}>
-              <Text style={styles.buttonText} onPress={() => this.fbSignIn()}>
-                Login With FaceBook
               </Text>
             </TouchableOpacity>
           </View>

@@ -30,7 +30,7 @@ import Thanks from './screens/Thanks';
 const HomeScreenRouter = createDrawerNavigator(
   {
     Profile: {screen: Profile},
-    customerHome: {screen: SignUp},
+    SignUp: {screen: SignUp},
     viewGPA: {screen: ViewGPA},
     Apply: {screen: Apply},
     CollegeFees: {screen: CollegeFees},
@@ -39,7 +39,6 @@ const HomeScreenRouter = createDrawerNavigator(
   },
   {
     contentComponent: DrawerContent,
-
     drawerPosition: 'right',
     drawerOpenRoute: 'DrawerRightOpen',
     drawerCloseRoute: 'DrawerRightClose',
@@ -48,13 +47,11 @@ const HomeScreenRouter = createDrawerNavigator(
 );
 const LoggedInUser = createDrawerNavigator(
   {
-    Profile: {screen: Profile},
+    Profile: {screen: HomeScreenRouter},
     CollegesList: {screen: CollegesList},
-    customerHome: {screen: SignUp},
+    // customerHome: {screen: SignUp},
     viewGPA: {screen: ViewGPA},
     Login: {screen: Login},
-    Confirm: {screen: HomeScreenRouter},
-
     Register: {screen: Register},
     Slider: {screen: Slider},
     SignUp: {screen: SignUp},
@@ -67,7 +64,6 @@ const LoggedInUser = createDrawerNavigator(
   },
   {
     contentComponent: DrawerContent,
-
     drawerPosition: 'right',
     drawerOpenRoute: 'DrawerRightOpen',
     drawerCloseRoute: 'DrawerRightClose',
@@ -77,14 +73,16 @@ const LoggedInUser = createDrawerNavigator(
 const AppNavigator = createStackNavigator(
   {
     Splash: {screen: Splash},
-    Confirm: {screen: HomeScreenRouter},
-
     Register: {screen: Register},
-
+    viewGPA: {screen: ViewGPA},
     Profile: {screen: HomeScreenRouter},
     Slider: {screen: Slider},
     SignUp: {screen: SignUp},
     Welcome: {screen: Welcome},
+    Apply: {screen: Apply},
+    CollegeFees: {screen: CollegeFees},
+    CollegesList: {screen: CollegesList},
+    Thanks: {screen: Thanks},
     Login: {screen: Login},
     Otp: {screen: Otp},
   },

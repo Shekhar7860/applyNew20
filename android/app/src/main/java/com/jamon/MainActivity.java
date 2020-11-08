@@ -1,4 +1,4 @@
-package com.modicarehelp;
+package com.applyMBBS;
 
 import com.facebook.react.ReactActivity;
 

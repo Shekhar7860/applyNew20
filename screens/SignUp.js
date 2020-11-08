@@ -65,31 +65,6 @@ export default class SignuUp extends Component {
   };
 
   getHomePageData = () => {
-    this.setState({
-      email: '',
-      password: '',
-      mobile: '',
-      token: '',
-      confirmPassword: '',
-      visible: false,
-      passwordError: '',
-      emailFormatError: '',
-      phone: '',
-      emailFormatError: '',
-      sub: '',
-      loading: false,
-      stname: '',
-      parentname: '',
-      score: '',
-      value: 1,
-      sub2: '',
-      sub3: '',
-      sub4: '',
-      sub5: '',
-      phy: '',
-      bio: '',
-      che: '',
-    });
     service.getUserData('tokenData').then(res => {
       console.log('localData', res);
       var data = JSON.parse(res);
@@ -158,16 +133,29 @@ export default class SignuUp extends Component {
             if (res.data !== undefined) {
               alert(JSON.stringify(res));
               if (res.data.status !== 403) {
-                console.log('reeee', res);
+                this.setState({
+                  stname: '',
+                  parentname: '',
+                  score: '',
+                  value: 1,
+                  sub2: '',
+                  sub3: '',
+                  sub4: '',
+                  sub5: '',
+                  phy: '',
+                  bio: '',
+                  che: '',
+                });
                 this.props.navigation.navigate('Thanks', {data: res});
               } else {
-                Alert.alert('Network Error');
+                Alert.alert('Session Expired !Plz Logout, Login And Try Again');
               }
             } else {
               if (res) {
+                console.log('res', res);
                 this.props.navigation.navigate('Thanks', {data: res});
               } else {
-                Alert.alert('Network Error');
+                Alert.alert('Session Expired !Plz Logout, Login And Try Again');
               }
             }
           }, 1000);
@@ -189,9 +177,7 @@ export default class SignuUp extends Component {
   };
 
   getApplicationId = id => {
-    this.setState({visible: true});
     service.getApplicationId(id).then(res => {
-      this.setState({visible: false});
       console.group('applicationId', res);
       var arr = [];
       for (let i in res) {
@@ -299,14 +285,6 @@ export default class SignuUp extends Component {
     ];
     return (
       <View style={{flex: 1}}>
-        <Spinner
-          visible={this.state.visible}
-          color="#00ff00"
-          tintColor="#00ff00"
-          animation={'fade'}
-          cancelable={false}
-          textStyle={{color: '#FFF'}}
-        />
         <View style={styles.toolbar}>
           <TouchableOpacity>
             <Image style={{width: 30, marginLeft: 5, height: 30}} />
@@ -496,7 +474,7 @@ export default class SignuUp extends Component {
                   style={styles.inputBox}
                   onChangeText={score => this.setState({score})}
                   underlineColorAndroid="rgba(0,0,0,0)"
-                  placeholder=""
+                  placeholder="NEET SCORE (optional)"
                   ref={input => {
                     this.fifthTextInput = input;
                   }}

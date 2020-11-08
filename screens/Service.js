@@ -277,6 +277,7 @@ export default class Service extends Component {
       });
   };
   getApplicationId = applicationId => {
+    console.log('application Id is', applicationId);
     return fetch(
       `https://www.mbbsbangladesh.com/wp-json/mbbs-api/my-application/${applicationId}`,
       {

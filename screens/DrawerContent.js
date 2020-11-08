@@ -17,23 +17,23 @@ class DrawerContent extends Component {
     super(props);
     this.state = {
       channels: [
-        {screen: 'Profile Screen', title: 'Profile', icon: 'person'},
+        {screen: 'Profile', title: 'Profile', icon: 'person'},
         {
-          screen: 'GPA Calculator Screen',
+          screen: 'GPA Calculator',
           title: 'GPA Calculator',
           icon: 'checklist',
         },
         {
-          screen: 'College Fees Screen',
-          title: 'College Fees Screen',
+          screen: 'College Fees',
+          title: 'College Fees',
           icon: 'file-submodule',
         },
         {
-          screen: 'Colleges List Screen',
-          title: 'Colleges List Screen',
+          screen: 'Colleges List',
+          title: 'Colleges List',
           icon: 'list-ordered',
         },
-        {screen: 'Apply Screen', title: 'Apply Screen', icon: 'broadcast'},
+        {screen: 'Apply', title: 'Apply', icon: 'broadcast'},
         {screen: 'Log Out Screen', title: 'Log Out', icon: 'home'},
       ],
     };
@@ -60,20 +60,20 @@ class DrawerContent extends Component {
           cancelable: false,
         },
       );
-    } else if (route == 'GPA Calculator Screen') {
+    } else if (route == 'GPA Calculator') {
       this.props.navigation.navigate('SignUp');
-    } else if (route == 'College Fees Screen') {
+    } else if (route == 'College Fees') {
       this.props.navigation.navigate('CollegeFees');
-    } else if (route == 'Colleges List Screen') {
+    } else if (route == 'Colleges List') {
       this.props.navigation.navigate('CollegesList');
 
       //  Linking.openURL(
       //    'https://www.mbbsbangladesh.com/list-of-medical-colleges',
       //  );
       // this.props.navigation.navigate('Apply');
-    } else if (route == 'Apply Screen') {
+    } else if (route == 'Apply') {
       this.props.navigation.navigate('Apply');
-    } else if (route == 'Profile Screen') {
+    } else if (route == 'Profile') {
       this.props.navigation.navigate('Profile');
     }
   };

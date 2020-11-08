@@ -111,7 +111,8 @@ export default class Login extends Component {
   };
   submit = () => {
     var regexp = /^\S*$/;
-    var pat = /^[a-z]+$/;
+    var pat = /^[a-z0-9]+$/;
+    var third = /^([^0-9]*)$/;
 
     if (this.state.username && this.state.password) {
       if (

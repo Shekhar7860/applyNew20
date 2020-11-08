@@ -37,6 +37,8 @@ export default class Apply extends Component {
       totalGpa: '',
       title: 'Upload Documents',
       application: [],
+      nextButton: '',
+      disableButton: true,
     };
   }
 
@@ -53,16 +55,16 @@ export default class Apply extends Component {
       });
       if (value == 'tenth') {
         v = 'Tenth Document';
-        this.setState({tenth: res});
+        this.setState({tenth: res, nextButton: 'Next', disableButton: false});
       } else if (value == 'twelth') {
         v = 'Twelfth Document';
-        this.setState({twelth: res});
+        this.setState({twelth: res, nextButton: 'Next', disableButton: false});
       } else if (value == 'neet') {
         v = 'Neet Score Card';
-        this.setState({neet: res});
+        this.setState({neet: res, nextButton: 'Next', disableButton: false});
       } else if (value == 'passing') {
         v = 'Passing Certificates';
-        this.setState({pass: res});
+        this.setState({pass: res, nextButton: 'Next', disableButton: false});
       } else {
         v = 'Other Documents';
         this.setState({other: res});
@@ -134,33 +136,33 @@ export default class Apply extends Component {
     this.props.navigation.pop();
   };
 
+  makeNextDisable = () => {
+    this.setState({disableButton: true, nextButton: ''});
+  };
+
   submit = (document, slug) => {
-    this.setState({visible: true});
-    service
-      .uploadDocuments(
-        this.state.applicationId,
-        document,
-        this.state.token,
-        slug,
-      )
-      .then(res => {
-        console.group('res', res);
-        this.setState({visible: false});
-        Alert.alert('Documents Uploaded Successfully');
-      });
+    if (document !== '') {
+      this.setState({visible: true});
+      service
+        .uploadDocuments(
+          this.state.applicationId,
+          document,
+          this.state.token,
+          slug,
+        )
+        .then(res => {
+          console.group('res', res);
+          this.setState({visible: false});
+          Alert.alert('Documents Uploaded Successfully');
+        });
+    } else {
+      Alert.alert('Please Complete GPA Calculations First');
+    }
   };
   render() {
     const {resultGPA, roundGPA1, roundGPA2, totalGpa, application} = this.state;
     return (
       <View style={{flex: 1}}>
-        <Spinner
-          visible={this.state.visible}
-          color="#00ff00"
-          tintColor="#00ff00"
-          animation={'fade'}
-          cancelable={false}
-          textStyle={{color: '#FFF'}}
-        />
         <View style={styles.toolbar}>
           <Text style={styles.toolbarButton} />
           <Text style={styles.toolbarTitle}>{this.state.title}</Text>
@@ -175,7 +177,11 @@ export default class Apply extends Component {
           {application.length !== 0 ? (
             resultGPA == 'Pass' ? (
               <ProgressSteps>
-                <ProgressStep label="Tenth">
+                <ProgressStep
+                  label="Tenth"
+                  nextBtnText={this.state.nextButton}
+                  nextBtnDisabled={this.state.disableButton}
+                  onNext={() => this.makeNextDisable()}>
                   <View style={{alignItems: 'center'}}>
                     <Text style={{...styles.pdf, marginTop: 10}}>
                       {this.state.tenth.name}
@@ -196,7 +202,11 @@ export default class Apply extends Component {
                     </TouchableOpacity>
                   </View>
                 </ProgressStep>
-                <ProgressStep label="Twelfth">
+                <ProgressStep
+                  label="Twelfth"
+                  nextBtnText={this.state.nextButton}
+                  nextBtnDisabled={this.state.disableButton}
+                  onNext={() => this.makeNextDisable()}>
                   <View style={{alignItems: 'center'}}>
                     <Text style={{...styles.pdf, marginTop: 10}}>
                       {this.state.twelth.name}
@@ -219,7 +229,11 @@ export default class Apply extends Component {
                     </TouchableOpacity>
                   </View>
                 </ProgressStep>
-                <ProgressStep label="Neet Score Card">
+                <ProgressStep
+                  label="Neet Score Card"
+                  nextBtnText={this.state.nextButton}
+                  nextBtnDisabled={this.state.disableButton}
+                  onNext={() => this.makeNextDisable()}>
                   <View style={{alignItems: 'center'}}>
                     <Text style={{...styles.pdf, marginTop: 10}}>
                       {this.state.neet.name}
@@ -242,7 +256,11 @@ export default class Apply extends Component {
                     </TouchableOpacity>
                   </View>
                 </ProgressStep>
-                <ProgressStep label="Passing Certificates">
+                <ProgressStep
+                  label="Passing Certificates"
+                  nextBtnText={this.state.nextButton}
+                  nextBtnDisabled={this.state.disableButton}
+                  onNext={() => this.makeNextDisable()}>
                   <View style={{alignItems: 'center'}}>
                     <Text style={{...styles.pdf, marginTop: 10}}>
                       {this.state.pass.name}
@@ -395,6 +413,13 @@ export default class Apply extends Component {
             </View>
           )}
         </View>
+        <Spinner
+          visible={this.state.visible}
+          color="#00ff00"
+          tintColor="#00ff00"
+          cancelable={false}
+          textStyle={{color: '#FFF'}}
+        />
       </View>
     );
   }

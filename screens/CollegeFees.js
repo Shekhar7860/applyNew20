@@ -91,10 +91,13 @@ export default class CollegeFees extends Component {
                       }}
                     />
                   </View>
-                  <View style={{alignSelf: 'center'}}>
+                  <View style={{marginHorizontal: 30}}>
                     <Text>
+                      {'\n'}
                       Fees- {item.fees[0]}
+                      {'\n'}
                       {'\n'}First Year Payment - {item.first_year_payment[0]}
+                      {'\n'}
                       {'\n'}Hostel Fees - {item.hostel_fees[0]}
                     </Text>
                   </View>

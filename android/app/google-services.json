@@ -1,34 +1,92 @@
 {
   "project_info": {
-    "project_number": "39539890358",
-    "firebase_url": "https://modicarehelp-24ab2.firebaseio.com",
-    "project_id": "modicarehelp-24ab2",
-    "storage_bucket": "modicarehelp-24ab2.appspot.com"
+    "project_number": "825999179658",
+    "firebase_url": "https://applymbbs-752c5.firebaseio.com",
+    "project_id": "applymbbs-752c5",
+    "storage_bucket": "applymbbs-752c5.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:39539890358:android:eed3e22e3b948f5d76ee17",
+        "mobilesdk_app_id": "1:825999179658:android:bcd97c629f25bcab261273",
         "android_client_info": {
-          "package_name": "com.modicarehelp"
+          "package_name": "com.apply"
         }
       },
       "oauth_client": [
         {
-          "client_id": "39539890358-49plk7g60ksrqbiis1fhgtun5addpm51.apps.googleusercontent.com",
+          "client_id": "825999179658-cc8t1jp8rd68ibehg6bdstssr970she2.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDKrF39d5B8oSNgtp0vrxtHObZ3qmJwfkU"
+          "current_key": "AIzaSyD7biFbt_mHFSBAj85JxGFC8ZQT7a0ZfyY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "39539890358-49plk7g60ksrqbiis1fhgtun5addpm51.apps.googleusercontent.com",
+              "client_id": "825999179658-cc8t1jp8rd68ibehg6bdstssr970she2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:825999179658:android:31ca364fc1c656a5261273",
+        "android_client_info": {
+          "package_name": "com.apply.MBBS"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "825999179658-cc8t1jp8rd68ibehg6bdstssr970she2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7biFbt_mHFSBAj85JxGFC8ZQT7a0ZfyY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "825999179658-cc8t1jp8rd68ibehg6bdstssr970she2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:825999179658:android:6230697302ae6228261273",
+        "android_client_info": {
+          "package_name": "com.applyMBBS"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "825999179658-cc8t1jp8rd68ibehg6bdstssr970she2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7biFbt_mHFSBAj85JxGFC8ZQT7a0ZfyY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "825999179658-cc8t1jp8rd68ibehg6bdstssr970she2.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -112,7 +112,7 @@ export default class Profile extends Component {
               style={{
                 marginTop: 20,
                 fontSize: 18,
-                textTransform: 'uppercase',
+                textTransform: 'capitalize',
               }}>
               First Name -{' '}
               {this.state.userData ? this.state.userData.first_name : ''}{' '}
@@ -148,7 +148,7 @@ export default class Profile extends Component {
               style={{
                 marginTop: 20,
                 fontSize: 18,
-                textTransform: 'uppercase',
+                textTransform: 'capitalize',
               }}>
               Last Name -{' '}
               {this.state.userData ? this.state.userData.last_name : ''}{' '}
@@ -157,7 +157,7 @@ export default class Profile extends Component {
               style={{
                 marginTop: 20,
                 fontSize: 18,
-                textTransform: 'uppercase',
+                textTransform: 'capitalize',
               }}>
               Email - {this.state.userData ? this.state.userData.email : ''}
             </Text>

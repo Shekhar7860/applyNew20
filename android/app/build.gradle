@@ -128,12 +128,12 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.modicarehelp"
+        applicationId "com.applyMBBS"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 1
-        versionName "1.0"
+        versionCode 11
+        versionName "1.12"
     }
     splits {
         abi {

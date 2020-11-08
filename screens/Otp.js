@@ -95,7 +95,7 @@ class Otp extends Component {
     let otp = this.state.first + this.state.second + this.state.third + value;
     console.log('oyp', otp);
     service.verifyOTP(this.state.userData.id, otp).then(res => {
-      console.log('res', res);
+      console.group('res', res);
       if (res.success == true) {
         this.props.navigation.navigate('Profile');
       } else {
