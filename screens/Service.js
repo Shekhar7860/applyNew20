@@ -277,14 +277,27 @@ export default class Service extends Component {
       });
   };
   getApplicationId = applicationId => {
-    console.log('application Id is', applicationId);
+    console.log('meri application Id is', applicationId);
+   return fetch(`https://www.mbbsbangladesh.com/wp-json/mbbs-api/my-application/${applicationId}`, {
+         method: 'GET'
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+         console.log('res', responseJson);
+         this.setState({
+            data: responseJson
+         })
+      })
+      .catch((error) => {
+         console.error(error);
+      });
     return fetch(
       `https://www.mbbsbangladesh.com/wp-json/mbbs-api/my-application/${applicationId}`,
       {
         method: 'GET',
       },
     )
-      .then(response => response.json())
+    .then(response => response.json())
       .catch(error => {
         console.error(error);
       });
