@@ -86,18 +86,22 @@ export default class Apply extends Component {
   }
 
   getHomePageData = () => {
-    service.getUserData('userData').then(res => {
-      console.log('localData', res);
-      var data = JSON.parse(res);
-      console.log('parsed Data', data);
-      this.getApplicationId(data.id);
-      this.setState({userData: data, userId: data.id});
-    });
     service.getUserData('tokenData').then(res => {
-      console.log('localData', res);
-      var data = JSON.parse(res);
-      console.log('parsed Data', data);
-      this.setState({token: data.token});
+      if (res == 'none') {
+        Alert.alert('Session Expired !Plz Logout, Login And Try Again');
+      } else {
+        console.log('localData', res);
+        var data = JSON.parse(res);
+        console.log('parsed Data', data);
+        this.setState({token: data.token});
+        service.getUserData('userData').then(res => {
+          console.log('localData', res);
+          var data = JSON.parse(res);
+          console.log('parsed Data', data);
+          this.getApplicationId(data.id);
+          this.setState({userData: data, userId: data.id});
+        });
+      }
     });
   };
 

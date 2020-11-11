@@ -66,17 +66,21 @@ export default class SignuUp extends Component {
 
   getHomePageData = () => {
     service.getUserData('tokenData').then(res => {
-      console.log('localData', res);
-      var data = JSON.parse(res);
-      console.group('parsed Data', data);
-      this.setState({token: data.token});
-    });
-    service.getUserData('userData').then(res => {
-      console.log('localData', res);
-      var data = JSON.parse(res);
-      console.group('parsed Data', data);
-      this.getApplicationId(data.id);
-      this.setState({userId: data.id});
+      console.log('localData2', res);
+      if (res == 'none') {
+        Alert.alert('Session Expired !Plz Logout, Login And Try Again');
+      } else {
+        var data = JSON.parse(res);
+        console.group('parsed Data', data);
+        this.setState({token: data.token});
+        service.getUserData('userData').then(res => {
+          console.log('localData', res);
+          var data = JSON.parse(res);
+          console.group('parsed Data', data);
+          this.getApplicationId(data.id);
+          this.setState({userId: data.id});
+        });
+      }
     });
   };
 
@@ -133,35 +137,39 @@ export default class SignuUp extends Component {
             if (res.data !== undefined) {
               alert(JSON.stringify(res));
               if (res.data.status !== 403) {
-                this.setState({
-                  stname: '',
-                  parentname: '',
-                  score: '',
-                  value: 1,
-                  sub2: '',
-                  sub3: '',
-                  sub4: '',
-                  sub5: '',
-                  phy: '',
-                  bio: '',
-                  che: '',
-                });
                 this.props.navigation.navigate('Thanks', {data: res});
               } else {
-                Alert.alert('Session Expired !Plz Logout, Login And Try Again');
+                Alert.alert('Network Error');
               }
             } else {
               if (res) {
                 console.log('res', res);
                 this.props.navigation.navigate('Thanks', {data: res});
               } else {
-                Alert.alert('Session Expired !Plz Logout, Login And Try Again');
+                Alert.alert('Network Error');
               }
             }
           }, 1000);
 
-          if (res) {
-          }
+          this.setState({
+            stname: '',
+            parentname: '',
+            score: '',
+            value: 1,
+            sub2: '',
+            sub3: '',
+            sub4: '',
+            sub5: '',
+            phy: '',
+            bio: '',
+            che: '',
+            picker1: '',
+            picker2: '',
+            email: '',
+            phone: '',
+            sub: '',
+          });
+          this.refs['10year'].select(-1);
         });
       console.log(
         'valuttt',
@@ -741,6 +749,8 @@ export default class SignuUp extends Component {
                 keyboardType="email-address"
               />
               <Dropdown
+                ref="10year"
+                defaultIndex={-1}
                 containerStyle={{width: '70%'}}
                 label="Choose Year of Class 10"
                 data={data}
