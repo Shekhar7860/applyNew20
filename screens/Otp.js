@@ -97,7 +97,7 @@ class Otp extends Component {
     service.verifyOTP(this.state.userData.id, otp).then(res => {
       console.group('res', res);
       if (res.success == true) {
-        this.props.navigation.navigate('Profile');
+        this.props.navigation.navigate('Login');
       } else {
         Alert.alert('Invalid OTP');
       }

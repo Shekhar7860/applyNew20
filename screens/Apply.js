@@ -88,7 +88,7 @@ export default class Apply extends Component {
   getHomePageData = () => {
     service.getUserData('tokenData').then(res => {
       if (res == 'none') {
-        Alert.alert('Session Expired !Plz Logout, Login And Try Again');
+        //  Alert.alert('Session Expired !Plz Logout, Login And Try Again');
       } else {
         console.log('localData', res);
         var data = JSON.parse(res);

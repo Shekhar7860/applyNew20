@@ -68,7 +68,7 @@ export default class SignuUp extends Component {
     service.getUserData('tokenData').then(res => {
       console.log('localData2', res);
       if (res == 'none') {
-        Alert.alert('Session Expired !Plz Logout, Login And Try Again');
+        // Alert.alert('Session Expired !Plz Logout, Login And Try Again');
       } else {
         var data = JSON.parse(res);
         console.group('parsed Data', data);
