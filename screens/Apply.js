@@ -163,6 +163,10 @@ export default class Apply extends Component {
       Alert.alert('Please Complete GPA Calculations First');
     }
   };
+
+  openApplication = () => {
+    this.props.navigation.navigate('Application');
+  };
   render() {
     const {resultGPA, roundGPA1, roundGPA2, totalGpa, application} = this.state;
     return (
@@ -178,9 +182,23 @@ export default class Apply extends Component {
           </TouchableOpacity>
         </View>
         <View style={{flex: 1}}>
+          {this.state.tenth &&
+          this.state.twelth &&
+          this.state.neet &&
+          this.state.other &&
+          this.state.pass ? (
+            <TouchableOpacity
+              style={{...styles.button, marginTop: 40, alignSelf: 'center'}}>
+              <Text
+                style={styles.buttonText}
+                onPress={() => this.openApplication()}>
+                Application Status
+              </Text>
+            </TouchableOpacity>
+          ) : null}
           {application.length !== 0 ? (
             resultGPA == 'Pass' ? (
-              <ProgressSteps>
+              <ProgressSteps completedCheckColor={'#4bb543'}>
                 <ProgressStep
                   label="Tenth"
                   nextBtnText={this.state.nextButton}
@@ -287,7 +305,7 @@ export default class Apply extends Component {
                     </TouchableOpacity>
                   </View>
                 </ProgressStep>
-                <ProgressStep label="Other Documents">
+                <ProgressStep label="Other Documents" finishBtnText={''}>
                   <View style={{alignItems: 'center'}}>
                     <Text style={{...styles.pdf, marginTop: 10}}>
                       {this.state.other.name}

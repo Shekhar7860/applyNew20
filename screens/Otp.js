@@ -34,20 +34,24 @@ class Otp extends Component {
       type: '',
       userData: {},
       token: '',
+      userId: '',
     };
   }
 
   componentDidMount() {
     if (this.props.navigation.state.params) {
       console.group(this.props.navigation.state.params.number);
-      this.setState({mobile: this.props.navigation.state.params.number});
+      this.setState({
+        mobile: this.props.navigation.state.params.number,
+        userId: this.props.navigation.state.params.userId,
+      });
     }
 
     service.getUserData('userData').then(res => {
       console.log('localData', res);
-      var data = JSON.parse(res);
-      console.log('parsed Data', data);
-      this.setState({userData: data});
+      //  var data = JSON.parse(res);
+      // console.log('parsed Data', data);
+      // this.setState({userData: data});
       // this.setState({token:data.token})
       //  Alert.alert("loggin successfully")
       // this.props.navigation.navigate('Profile')
@@ -55,9 +59,9 @@ class Otp extends Component {
 
     service.getUserData('tokenData').then(res => {
       console.log('localData', res);
-      var data = JSON.parse(res);
-      console.log('parsed Data', data);
-      this.setState({token: data.token});
+      // var data = JSON.parse(res);
+      // console.log('parsed Data', data);
+      // this.setState({token: data.token});
       //  Alert.alert("loggin successfully")
       // this.props.navigation.navigate('Profile')
     });
@@ -80,10 +84,10 @@ class Otp extends Component {
       this.state.third +
       this.state.fourth;
     console.log('oyp', otp);
-    service.verifyOTP(this.state.userData.id, otp).then(res => {
+    service.verifyOTP(this.state.userId, otp).then(res => {
       console.log('res', res);
       if (res.success == true) {
-        this.props.navigation.navigate('Profile');
+        this.props.navigation.navigate('Login');
       } else {
         Alert.alert('Invalid OTP');
       }
@@ -94,7 +98,7 @@ class Otp extends Component {
     this.setState({fourth: value});
     let otp = this.state.first + this.state.second + this.state.third + value;
     console.log('oyp', otp);
-    service.verifyOTP(this.state.userData.id, otp).then(res => {
+    service.verifyOTP(this.state.userId, otp).then(res => {
       console.group('res', res);
       if (res.success == true) {
         this.props.navigation.navigate('Login');
@@ -111,12 +115,12 @@ class Otp extends Component {
   };
 
   goToHome = res => {
-    this.props.navigation.navigate('Profile');
+    this.props.navigation.navigate('Login');
   };
 
   resendOtp() {
-    service.resendOTP(this.state.userData.id).then(res => {
-      console.log(res);
+    service.resendOTP(this.state.userId).then(res => {
+      console.group('otpres', res);
       if (res.success == true) {
         this.firstTextInput.clear();
         this.secondTextInput.clear();

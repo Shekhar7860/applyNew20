@@ -21,6 +21,7 @@ import Confirm from './screens/Confirm';
 import Apply from './screens/Apply';
 import CollegeFees from './screens/CollegeFees';
 import CollegesList from './screens/CollegesList';
+import ApplicationStatus from './screens/ApplicationStatus';
 import Slider from './screens/Slider';
 import Welcome from './screens/Welcome';
 import DrawerContent from './screens/DrawerContent';
@@ -61,6 +62,7 @@ const LoggedInUser = createDrawerNavigator(
     Apply: {screen: Apply},
     CollegeFees: {screen: CollegeFees},
     Thanks: {screen: Thanks},
+    Application: {screen: ApplicationStatus},
   },
   {
     contentComponent: DrawerContent,

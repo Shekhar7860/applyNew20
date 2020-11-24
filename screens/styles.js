@@ -204,6 +204,19 @@ export default (styles = StyleSheet.create({
     justifyContent: align.center,
     alignItems: 'center',
   },
+  commonRow: {
+    flexDirection: 'row',
+    marginTop: 20,
+  },
+  firstWidth: {
+    width: '10%',
+  },
+  secondWidth: {
+    width: '10%',
+  },
+  commonText: {
+    fontSize: 14,
+  },
   bottomContent: {
     backgroundColor: '#00684D',
     marginTop: 20,
@@ -454,6 +467,9 @@ export default (styles = StyleSheet.create({
   },
   textWidth: {
     width: '100%',
+  },
+  textWidth2: {
+    width: '25%',
   },
   iconsAlign: {
     flexDirection: 'row',

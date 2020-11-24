@@ -66,10 +66,10 @@ export default class Register extends Component {
   submit = () => {
     var regexp = /^\S*$/;
     var pat = /^[a-z0-9]+$/;
-    if (this.state.name && this.state.email && this.state.mobile) {
+    if (this.state.username && this.state.email && this.state.mobile) {
       if (
-        regexp.test(this.state.name) == true &&
-        pat.test(this.state.name) == true
+        regexp.test(this.state.username) == true &&
+        pat.test(this.state.username) == true
       ) {
         if (
           !service.validateEmail(this.state.email) &&
@@ -80,8 +80,8 @@ export default class Register extends Component {
         } else {
           this.setState({visible: true});
           var data = {
-            name: this.state.name,
-            username: this.state.name,
+            name: this.state.username,
+            username: this.state.username,
             email: this.state.email,
             first_name: this.state.firstName,
             last_name: this.state.lastName,
@@ -91,7 +91,7 @@ export default class Register extends Component {
           };
           service
             .register(
-              this.state.name,
+              this.state.username,
               this.state.email,
               this.state.firstName,
               this.state.lastName,
@@ -119,12 +119,13 @@ export default class Register extends Component {
                       res.code !== 'existing_user_login' &&
                       res.code !== 'existing_user_email'
                     ) {
-                      service.saveUserData('userData', res);
+                      //  service.saveUserData('userData', res);
                       // console.log(res, 'resss')
                       // Alert.alert('User Created SuccessFully');
                       this.setState({visible: false});
                       this.props.navigation.navigate('Otp', {
                         number: this.state.mobile,
+                        userId: res.id,
                       });
                     } else {
                       Alert.alert(res.message);
@@ -133,7 +134,7 @@ export default class Register extends Component {
                         email: '',
                         firstName: '',
                         lastName: '',
-                        userName: '',
+                        username: '',
                       });
                     }
                   }),
@@ -144,7 +145,7 @@ export default class Register extends Component {
                     email: '',
                     firstName: '',
                     lastName: '',
-                    userName: '',
+                    username: '',
                   });
                   console.log('error', error);
                 });
@@ -220,6 +221,33 @@ export default class Register extends Component {
   goBack = () => {
     this.props.navigation.pop();
   };
+
+  checkUsername = username => {
+    var pat = /^[a-z@0-9]+$/;
+    var regexp = /^\S*$/;
+    if (username) {
+      if (
+        pat.test(username) == true &&
+        regexp.test(this.state.username) == true
+      ) {
+        this.setState({username});
+      } else {
+        Alert.alert('No White Space and Upper case character allowed');
+      }
+    }
+  };
+
+  checkEmail = email => {
+    var pat = /^[a-z@.0-9]+$/;
+    if (email) {
+      if (pat.test(email) == true) {
+        this.setState({email});
+      } else {
+        Alert.alert('No White Space and Upper case character allowed');
+      }
+    }
+  };
+
   render() {
     const NewImage = (
       <Image
@@ -272,9 +300,9 @@ export default class Register extends Component {
               />
               <TextInput
                 style={styles.inputBox}
-                onChangeText={name => this.setState({name})}
+                onChangeText={username => this.checkUsername(username)}
                 underlineColorAndroid="rgba(0,0,0,0)"
-                placeholder="Name"
+                placeholder="User Name"
                 placeholderTextColor="#95A5A6"
                 selectionColor="#fff"
                 keyboardType="email-address"
@@ -296,7 +324,7 @@ export default class Register extends Component {
               />
               <TextInput
                 style={styles.inputBox}
-                onChangeText={email => this.setState({email})}
+                onChangeText={email => this.checkEmail(email)}
                 underlineColorAndroid="rgba(0,0,0,0)"
                 placeholder="Email Address"
                 placeholderTextColor="#95A5A6"

@@ -10,6 +10,7 @@ import {
   Image,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Octicons';
+import Icon1 from 'react-native-vector-icons/MaterialCommunityIcons';
 import Service from './Service';
 
 class DrawerContent extends Component {
@@ -34,6 +35,11 @@ class DrawerContent extends Component {
           icon: 'list-ordered',
         },
         {screen: 'Apply', title: 'Apply', icon: 'broadcast'},
+        {
+          screen: 'Application Status',
+          title: 'Application Status',
+          icon: 'application',
+        },
         {screen: 'Log Out Screen', title: 'Log Out', icon: 'home'},
       ],
     };
@@ -75,6 +81,8 @@ class DrawerContent extends Component {
       this.props.navigation.navigate('Apply');
     } else if (route == 'Profile') {
       this.props.navigation.navigate('Profile');
+    } else if (route == 'Application Status') {
+      this.props.navigation.navigate('Application');
     }
   };
 
@@ -88,12 +96,21 @@ class DrawerContent extends Component {
         key={screen + title}
         onPress={this.navigateToScreen(screen)}>
         <View style={{flexDirection: 'row'}}>
-          <Icon
-            name={icon}
-            size={20}
-            color="white"
-            style={{margin: 15, width: 20}}
-          />
+          {title == 'Application Status' ? (
+            <Icon1
+              name={icon}
+              size={20}
+              color="white"
+              style={{margin: 15, width: 20}}
+            />
+          ) : (
+            <Icon
+              name={icon}
+              size={20}
+              color="white"
+              style={{margin: 15, width: 20}}
+            />
+          )}
           <Text style={{color: 'white', marginTop: 17}}>{title}</Text>
         </View>
       </TouchableOpacity>

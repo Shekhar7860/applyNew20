@@ -112,7 +112,6 @@ export default class Login extends Component {
   submit = () => {
     var regexp = /^\S*$/;
     var pat = /^[a-z0-9]+$/;
-    var third = /^([^0-9]*)$/;
 
     if (this.state.username && this.state.password) {
       if (
@@ -218,6 +217,21 @@ export default class Login extends Component {
       Alert.alert('please enter username and password both');
     }
   };
+
+  checkUsername = username => {
+    var pat = /^[a-z@0-9]+$/;
+    var regexp = /^\S*$/;
+    if (username) {
+      if (
+        pat.test(username) == true &&
+        regexp.test(this.state.username) == true
+      ) {
+        this.setState({username});
+      } else {
+        Alert.alert('No White Space and Upper case character allowed');
+      }
+    }
+  };
   render() {
     return (
       <KeyboardAvoidingView
@@ -265,9 +279,9 @@ export default class Login extends Component {
             />
             <TextInput
               style={styles.inputBox}
-              onChangeText={username => this.setState({username})}
+              onChangeText={username => this.checkUsername(username)}
               underlineColorAndroid="rgba(0,0,0,0)"
-              placeholder="UserName"
+              placeholder="User Name"
               placeholderTextColor="#95A5A6"
               autoCapitalize="none"
               keyboardType="default"

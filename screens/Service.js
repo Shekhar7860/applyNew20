@@ -276,6 +276,20 @@ export default class Service extends Component {
         console.error(error);
       });
   };
+
+  getApplicationStatus = userId => {
+    return fetch(
+      `https://www.mbbsbangladesh.com/wp-json/mbbs-api/application-status/${userId}`,
+      {
+        method: 'GET',
+      },
+    )
+      .then(response => response.json())
+      .catch(error => {
+        console.error(error);
+      });
+  };
+
   getApplicationId = applicationId => {
     console.log('meri application Id is', applicationId);
     return fetch(
