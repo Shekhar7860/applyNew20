@@ -11,10 +11,12 @@ import {
   ScrollView,
   TouchableNativeFeedback,
   FlatList,
+  Button,
 } from 'react-native';
 import styles from './styles.js';
 import Spinner from 'react-native-loading-spinner-overlay';
 import Service from './Service';
+const {config, fs} = RNFetchBlob;
 
 export default class ApplicationStatus extends Component {
   constructor(props) {
@@ -167,9 +169,9 @@ export default class ApplicationStatus extends Component {
             </View>
             <View style={styles.secondWidth} />
             {invitationLetter ? (
-              <Image
-                style={{width: 30, height: 30}}
-                source={require('../images/check.png')}
+              <Button
+                onPress={() => this.downloadOfferLetter()}
+                title="Download"
               />
             ) : (
               <Text style={styles.commonText}>{this.state.letterMessage}</Text>
