@@ -16,7 +16,8 @@ import {
 import styles from './styles.js';
 import Spinner from 'react-native-loading-spinner-overlay';
 import Service from './Service';
-const {config, fs} = RNFetchBlob;
+import RNFetchBlob from 'rn-fetch-blob';
+import {PermissionsAndroid, Alert} from 'react-native';
 
 export default class ApplicationStatus extends Component {
   constructor(props) {
@@ -31,6 +32,7 @@ export default class ApplicationStatus extends Component {
       docMessage: 'Pending',
       letterMessage: 'Pending',
     };
+    this.actualDownload = this.actualDownload.bind(this);
   }
 
   componentDidMount = () => {
@@ -72,7 +74,7 @@ export default class ApplicationStatus extends Component {
         if (arr[0].invitation_letter !== 'Approval Awaited from College') {
           this.setState({
             invitationLetter: true,
-            invitationLetterUrl: arr[0].invitationLetter,
+            invitationLetterUrl: arr[0].invitation_letter_url,
           });
         } else {
           this.setState({letterMessage: arr[0].invitation_letter});
@@ -84,6 +86,46 @@ export default class ApplicationStatus extends Component {
 
       //   }
     });
+  };
+
+  downloadFile = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        this.actualDownload();
+      } else {
+        Alert.alert(
+          'Permission Denied!',
+          'You need to give storage permission to download the file',
+        );
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+
+  actualDownload = () => {
+    const {dirs} = RNFetchBlob.fs;
+    RNFetchBlob.config({
+      fileCache: true,
+      addAndroidDownloads: {
+        useDownloadManager: true,
+        notification: true,
+        mediaScannable: true,
+        title: `Mbbs-Invitation-Letter.pdf`,
+        path: `${dirs.DownloadDir}/Mbbs-Invitation-Letter.pdf`,
+      },
+    })
+      .fetch('GET', this.state.invitationLetterUrl, {})
+      .then(res => {
+        console.log('The file saved to ', res.path());
+        Alert.alert('Letter Saved in Downloads');
+      })
+      .catch(e => {
+        console.log(e);
+      });
   };
 
   goToPage = screen => {
@@ -165,14 +207,11 @@ export default class ApplicationStatus extends Component {
           <View style={styles.commonRow}>
             <View style={styles.firstWidth} />
             <View style={styles.textWidth2}>
-              <Text style={styles.commonText}>Offer Later</Text>
+              <Text style={styles.commonText}>Offer Letter</Text>
             </View>
             <View style={styles.secondWidth} />
             {invitationLetter ? (
-              <Button
-                onPress={() => this.downloadOfferLetter()}
-                title="Download"
-              />
+              <Button onPress={this.downloadFile} title="Download" />
             ) : (
               <Text style={styles.commonText}>{this.state.letterMessage}</Text>
             )}

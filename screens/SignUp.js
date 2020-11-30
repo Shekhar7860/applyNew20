@@ -131,11 +131,10 @@ export default class SignuUp extends Component {
           this.state.picker2,
         )
         .then(res => {
-          console.log('res1', res);
+          // console.log('res1', res);
           setTimeout(() => {
             this.setState({visible: false});
             if (res.data !== undefined) {
-              // alert(JSON.stringify(res));
               if (res.data.status !== 403) {
                 this.props.navigation.navigate('Thanks', {data: res});
               } else {
@@ -143,7 +142,6 @@ export default class SignuUp extends Component {
               }
             } else {
               if (res) {
-                console.log('res2', res);
                 this.props.navigation.navigate('Thanks', {data: res});
               } else {
                 Alert.alert('Network Error');
@@ -170,14 +168,6 @@ export default class SignuUp extends Component {
             sub: '',
           });
         });
-      console.log(
-        'valuttt',
-        this.state.email,
-        this.state.stname,
-        this.state.parentname,
-        this.state.parentname,
-        this.state.value,
-      );
     } else {
       Alert.alert('Please enter valid details');
     }

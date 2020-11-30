@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, AsyncStorage, NetInfo} from 'react-native';
+import axios from 'axios';
 
 export default class Service extends Component {
   constructor(props) {
@@ -164,7 +165,6 @@ export default class Service extends Component {
     }
 
     // formdata.append("product[description]", '12dsadadsa')
-    console.group('user id is', userId);
     var data = {
       user_id: userId,
       title: stname,
@@ -187,7 +187,7 @@ export default class Service extends Component {
       che_marks: che,
       bio_marks: bio,
     };
-    console.log('data', data);
+    console.log('data1', data, 'token2', token);
 
     return fetch('https://www.mbbsbangladesh.com/wp-json/wp/v2/candidates', {
       method: 'POST',
@@ -202,11 +202,50 @@ export default class Service extends Component {
       .catch(error => {
         console.error(error);
       });
+
+    // return fetch('https://www.mbbsbangladesh.com/wp-json/wp/v2/candidates', {
+    //   method: 'POST',
+    //   headers: {
+    //     Accept: 'application/json',
+    //     'Content-Type': 'application/json',
+    //     authorization: 'Bearer ' + token,
+    //   },
+    //   body: JSON.stringify(data),
+    // })
+    //   .then(response => this.getResponse(response))
+    //   .then(responseJson => {
+    //     console.log('res2', responseJson);
+    //   })
+    //   .catch(error => {
+    //     console.log('error is', error);
+    //   });
+    // const headers = {
+    //   'Content-Type': 'application/json',
+    //   Authorization: `Bearer ${token}`,
+    // };
+
+    // axios
+    //   .post(`https://www.mbbsbangladesh.com/wp-json/wp/v2/candidates`, data, {
+    //     headers: headers,
+    //   })
+    //   .then(response => {
+    //     console.log('reso', response);
+    //   })
+    //   .catch(error => {
+    //     console.log('err', error);
+    //   });
+  };
+
+  getResponse = res => {
+    console.log('res1', res);
+    res.then(result => {
+      console.log('result', result);
+    });
   };
 
   verifyOTP = (userId, otp) => {
     var data = {user_id: userId, OTP: otp};
-    console.log('data', data);
+    // console.log('data', data);
 
     return fetch(
       `https://www.mbbsbangladesh.com/wp-json/mbbs-api/check-otp/${userId}/${otp}`,

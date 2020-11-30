@@ -87,6 +87,7 @@ const AppNavigator = createStackNavigator(
     Thanks: {screen: Thanks},
     Login: {screen: Login},
     Otp: {screen: Otp},
+    Application: {screen: ApplicationStatus},
   },
   {headerMode: 'none'},
 );
@@ -100,6 +101,7 @@ export default class App extends Component {
     service = new Service();
   }
   componentDidMount() {
+    console.disableYellowBox = true;
     service.getUserData('userData').then(res => {
       console.log('localData', res);
       var data = JSON.parse(res);

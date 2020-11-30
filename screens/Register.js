@@ -119,7 +119,7 @@ export default class Register extends Component {
                       res.code !== 'existing_user_login' &&
                       res.code !== 'existing_user_email'
                     ) {
-                      //  service.saveUserData('userData', res);
+                      // service.saveUserData('userData', res);
                       // console.log(res, 'resss')
                       // Alert.alert('User Created SuccessFully');
                       this.setState({visible: false});

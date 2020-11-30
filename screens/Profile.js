@@ -27,7 +27,6 @@ export default class Profile extends Component {
   componentDidMount = () => {
     const {navigation} = this.props;
     navigation.addListener('willFocus', () => this.getHomePageData());
-
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
   };
 

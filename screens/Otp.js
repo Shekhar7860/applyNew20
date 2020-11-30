@@ -40,7 +40,7 @@ class Otp extends Component {
 
   componentDidMount() {
     if (this.props.navigation.state.params) {
-      console.group(this.props.navigation.state.params.number);
+      // console.group(this.props.navigation.state.params.number);
       this.setState({
         mobile: this.props.navigation.state.params.number,
         userId: this.props.navigation.state.params.userId,
@@ -120,7 +120,7 @@ class Otp extends Component {
 
   resendOtp() {
     service.resendOTP(this.state.userId).then(res => {
-      console.group('otpres', res);
+      console.log('otpres', res);
       if (res.success == true) {
         this.firstTextInput.clear();
         this.secondTextInput.clear();
