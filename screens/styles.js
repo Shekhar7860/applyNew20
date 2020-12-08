@@ -209,10 +209,10 @@ export default (styles = StyleSheet.create({
     marginTop: 20,
   },
   firstWidth: {
-    width: '10%',
+    width: '2%',
   },
   secondWidth: {
-    width: '10%',
+    width: '0%',
   },
   commonText: {
     fontSize: 14,

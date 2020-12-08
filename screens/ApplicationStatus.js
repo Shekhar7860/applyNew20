@@ -28,15 +28,18 @@ export default class ApplicationStatus extends Component {
       resultGPA: false,
       invitationLetter: false,
       invitationLetterUrl: '',
+      feesSubmitted: false,
       gpaMessage: 'Pending',
       docMessage: 'Pending',
       letterMessage: 'Pending',
+      collegeFeeSubmissionMessage: 'Pending',
     };
     this.actualDownload = this.actualDownload.bind(this);
   }
 
   componentDidMount = () => {
-    this.getData();
+    const {navigation} = this.props;
+    navigation.addListener('willFocus', () => this.getData());
   };
 
   getData = () => {
@@ -45,12 +48,13 @@ export default class ApplicationStatus extends Component {
       // console.log('localData', res);
       //  this.setState({visible: false});
       var data = JSON.parse(res);
-      console.group('parsed Data', data);
+      //  console.group('parsed Data', data);
       this.getApplicationStatus(data.id);
       this.setState({userId: data.id});
     });
   };
   getApplicationStatus = id => {
+    console.log('data', id);
     this.setState({visible: true});
     service.getApplicationStatus(id).then(res => {
       this.setState({visible: false});
@@ -58,26 +62,50 @@ export default class ApplicationStatus extends Component {
       for (let i in res) {
         arr.push(res[i]);
       }
-      console.log('response', arr);
+      console.group('response', arr);
       if (arr.length !== 0) {
         if (arr[0].result_gpa == 'Complete') {
           this.setState({resultGPA: true});
-        } else {
-          this.setState({gpaMessage: arr[0].result_gpa});
+        }
+        if (arr[0].gpa_result_message.length !== 0) {
+          this.setState({
+            gpaMessage: arr[0].gpa_result_message[0],
+          });
+        }
+        if (arr[0].document_uploaded_message.length !== 0) {
+          this.setState({
+            docMessage: arr[0].document_uploaded_message[0],
+          });
+        }
+        if (arr[0].fees_submission_message.length !== 0) {
+          this.setState({
+            collegeFeeSubmissionMessage: arr[0].fees_submission_message[0],
+          });
+        }
+        if (arr[0].invitation_letter_message.length !== 0) {
+          this.setState({
+            letterMessage: arr[0].invitation_letter_message[0],
+          });
+        }
+        if (arr[0].college_fees_Submission == 'Complete') {
+          this.setState({
+            feesSubmitted: true,
+          });
+        }
+        if (arr[0].invitation_letter == 'Complete') {
+          this.setState({
+            invitationLetter: true,
+          });
         }
 
         if (arr[0].Documentation == 'Complete') {
           this.setState({documentation: true});
-        } else {
-          this.setState({docMessage: arr[0].Documentation});
         }
-        if (arr[0].invitation_letter !== 'Approval Awaited from College') {
+        if (arr[0].invitation_letter !== 'Pending') {
           this.setState({
             invitationLetter: true,
             invitationLetterUrl: arr[0].invitation_letter_url,
           });
-        } else {
-          this.setState({letterMessage: arr[0].invitation_letter});
         }
       }
 
@@ -144,6 +172,9 @@ export default class ApplicationStatus extends Component {
       resultGPA,
       invitationLetter,
       invitationLetterUrl,
+      feesSubmitted,
+      collegeFeeSubmissionMessage,
+      college_fees_Submission,
     } = this.state;
     return (
       <View style={{flex: 1}}>
@@ -178,14 +209,15 @@ export default class ApplicationStatus extends Component {
               </TouchableOpacity>
             </View>
             <View style={styles.secondWidth} />
-            {resultGPA ? (
-              <Image
-                style={{width: 30, height: 30}}
-                source={require('../images/check.png')}
-              />
-            ) : (
+            <View style={{flexDirection: 'row'}}>
+              {resultGPA ? (
+                <Image
+                  style={{width: 30, marginRight: 10, height: 30}}
+                  source={require('../images/check.png')}
+                />
+              ) : null}
               <Text style={styles.commonText}>{this.state.gpaMessage}</Text>
-            )}
+            </View>
           </View>
           <View style={styles.commonRow}>
             <View style={styles.firstWidth} />
@@ -195,26 +227,59 @@ export default class ApplicationStatus extends Component {
               </TouchableOpacity>
             </View>
             <View style={styles.secondWidth} />
-            {documentation ? (
-              <Image
-                style={{width: 30, height: 30}}
-                source={require('../images/check.png')}
-              />
-            ) : (
+            <View style={{flexDirection: 'row'}}>
+              {documentation ? (
+                <Image
+                  style={{width: 30, marginRight: 10, height: 30}}
+                  source={require('../images/check.png')}
+                />
+              ) : null}
               <Text style={styles.commonText}>{this.state.docMessage}</Text>
-            )}
+            </View>
           </View>
+
           <View style={styles.commonRow}>
             <View style={styles.firstWidth} />
             <View style={styles.textWidth2}>
               <Text style={styles.commonText}>Offer Letter</Text>
             </View>
             <View style={styles.secondWidth} />
-            {invitationLetter ? (
-              <Button onPress={this.downloadFile} title="Download" />
-            ) : (
-              <Text style={styles.commonText}>{this.state.letterMessage}</Text>
-            )}
+            <View style={{flexDirection: 'column'}}>
+              <View style={{flexDirection: 'row'}}>
+                {invitationLetter ? (
+                  <Image
+                    style={{width: 30, marginRight: 10, height: 30}}
+                    source={require('../images/check.png')}
+                  />
+                ) : null}
+                <Text style={styles.commonText}>
+                  {this.state.letterMessage}
+                </Text>
+              </View>
+              <View style={{marginTop: 10, width: '50%', alignSelf: 'center'}}>
+                {invitationLetter ? (
+                  <Button onPress={this.downloadFile} title="Download" />
+                ) : null}
+              </View>
+            </View>
+          </View>
+          <View style={styles.commonRow}>
+            <View style={styles.firstWidth} />
+            <View style={styles.textWidth2}>
+              <Text style={styles.commonText}>College Fees</Text>
+            </View>
+            <View style={styles.secondWidth} />
+            <View style={{flexDirection: 'row'}}>
+              {feesSubmitted ? (
+                <Image
+                  style={{width: 30, marginRight: 10, height: 30}}
+                  source={require('../images/check.png')}
+                />
+              ) : null}
+              <Text style={styles.commonText}>
+                {this.state.collegeFeeSubmissionMessage}
+              </Text>
+            </View>
           </View>
         </ScrollView>
       </View>

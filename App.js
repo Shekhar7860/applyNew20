@@ -37,6 +37,7 @@ const HomeScreenRouter = createDrawerNavigator(
     CollegeFees: {screen: CollegeFees},
     CollegesList: {screen: CollegesList},
     Thanks: {screen: Thanks},
+    Application: {screen: ApplicationStatus},
   },
   {
     contentComponent: DrawerContent,
